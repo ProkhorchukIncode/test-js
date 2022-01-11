@@ -39,8 +39,7 @@ function findMaxInterv(){
         answer = maxNumber
       }
     }
-    console.log(answer);
-  return answer
+  return console.log(answer);
  }
  
  findMaxInterv(3, 5, 2, 7); // 5

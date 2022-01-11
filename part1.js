@@ -5,7 +5,7 @@ const getMulTable = (n) => {
     }
   }
   
-  // getMulTable(5)
+  getMulTable(5)
 //   > 5*1 = 5
 //     5*2 = 10
 //     …
@@ -21,30 +21,29 @@ const anagram = (str1, str2) => {
   return console.log(true);
  }
  
-//  anagram('night', 'thing') // true
-//  anagram('state', 'taste') // true
-//  anagram('cat', 'dog') // false
+ anagram('night', 'thing') // true
+ anagram('state', 'taste') // true
+ anagram('cat', 'dog') // false
 
 function findMaxInterv(){
   let argsArray = [...arguments]
-  let answer = argsArray.reduce(
-    (previousValue, currentValue, index, argsArray) => {
-      // console.log(newArray[index]);
-      let newArray = []
-      if(argsArray[index]>currentValue){
-        // console.log(previousValue);
-        a = argsArray[index]-currentValue
-      } else{
-        console.log(currentValue);
-        a = currentValue-argsArray[index]
+    let answer = 0
+    for(let i = 0; i<argsArray.length-1; i++){
+      let maxNumber = 0
+      if(argsArray[i]>argsArray[i+1]){
+        maxNumber = argsArray[i]-argsArray[i+1]
+      }else{
+        maxNumber = argsArray[i+1]-argsArray[i]
       }
-      // console.log(a);
-      return a
-    })
+      if(maxNumber>answer){
+        answer = maxNumber
+      }
+    }
     console.log(answer);
+  return answer
  }
  
  findMaxInterv(3, 5, 2, 7); // 5
-//  findMaxInterv(3, 5, 2, 7, 11, 0, -2); // 11
-//  findMaxInterv(3, 5); // 2
-//  findMaxInterv(3); // 0
+ findMaxInterv(3, 5, 2, 7, 11, 0, -2); // 11
+ findMaxInterv(3, 5); // 2
+ findMaxInterv(3); // 0

@@ -12,18 +12,33 @@ const getMulTable = (n) => {
 //     5*9 = 45
 
 const anagram = (str1, str2) => {
-    for(let i = 0; i<str2.length; i++){
-      let bool = str2.includes(str1[i])
-      if (!bool){
-        return console.log(false);
-      } 
+  let arr1 = str1.split('')
+  let arr2 = str2.split('')
+  let answer = false
+  if(arr1.length !== arr2.length){
+    return console.log(answer)
   }
-  return console.log(true);
+  for(let i = 0; i<arr1.length; i++){
+    const finded1= arr2.find(num => num ===arr1[i])
+    const finded2= arr1.find(num => num ===arr2[i])
+    if(finded1 && finded2){
+      answer= true
+    } else {
+      answer= false
+    }
+  }
+
+  return console.log(answer);
  }
  
  anagram('night', 'thing') // true
  anagram('state', 'taste') // true
  anagram('cat', 'dog') // false
+//  anagram('ccc', 'dog')
+//  anagram('cccc', 'dog')
+//  anagram('ggggg', 'dog')
+//  anagram('dd', 'dog')
+//  anagram('god', 'dog')
 
 function findMaxInterv(){
   let argsArray = [...arguments]

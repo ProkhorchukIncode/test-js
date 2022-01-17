@@ -217,9 +217,57 @@ function withoutFields() {
     const element = argsArray[index];
     filterValueArray.push(element)
   }
-
-  console.log(filterValueArray);
+  
+  let newArray = []
+  for (let index = 0; index < array.length; index++) {
+    const element = array[index];
+    if(element[0] !== filterValueArray[0]){
+      newArray.push(element)
+    }
+  }
+  filterValueArray.shift()
+  
+  let newObject = Object.fromEntries(newArray)
+  if(filterValueArray.length > 0){
+    newObject = withoutFields(newObject, ...filterValueArray)
+  }
+  
+  return newObject
 };
 
 const objectToCut = { a: 1, b: 2, c: 3 };
-console.log(withoutFields(objectToCut, 'b', 'c')); // { a: 1 }
+// console.log(withoutFields(objectToCut, 'b', 'c')); // { a: 1 }
+
+// ! 12
+/**
+ * Описание задачи: Напишите функцию, которая поверхностно сравнивает два объекта.
+ * Ожидаемый результат: True если объекты идентичны, false если объекты разные ({ a: 1, b: 1 }, { a: 1, b: 1 }) => true
+ * @param {Object<string | number>} firstObj - объект с примитивами
+ * @param {Object<string | number>} secondObj - объект с примитивами
+ * @returns {boolean}
+ */
+
+ export const isEqualObjects = (firstObject, secondObject) => {
+};
+
+const isEqualObject1 = { a: 1, b: 1 };
+const isEqualObject2 = { a: 1, b: 1 };
+const isEqualObject3 = { a: 1, b: 2 };
+// console.log(isEqualObjects(isEqualObject1, isEqualObject2)); // true
+// console.log(isEqualObjects(isEqualObject1, isEqualObject3)); // false
+
+// ! 13
+/**
+ * Описание задачи: Напишите функцию, которая поверхностно находит пересечения объектов и возвращает объект пересечений.
+ * Ожидаемый результат: ({ a: 1, b: 2 }, { c: 1, b: 2 }) => { b: 2 }
+ * @param {Object<string | number>} firstObj - объект с примитивными значениями
+ * @param {Object<string | number>} secondObj - объект с примитивными значениями
+ * @returns {Object}
+ */
+
+ export const intersection = (firstObject, secondObject) => {
+};
+
+const intersectionObject1 = { a: 1, b: 2 };
+const intersectionObject2 = { c: 1, b: 2 };
+console.log(intersection(intersectionObject1, intersectionObject2)); // { b: 2 }

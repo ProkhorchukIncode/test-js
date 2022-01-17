@@ -2,7 +2,7 @@
 const foo = (min, max) => {
   const randomNumber = Math.random() * (max-min +1) + min;
   const numberParseInt = parseInt(randomNumber)
-  if(numberParseInt % 2 === 0 ){
+  if(!(numberParseInt % 2)){
      return console.log(`${numberParseInt} - Четное число`);
   }
   console.log(`${numberParseInt} - Нечетное число`);
@@ -56,16 +56,26 @@ const arrayToReverse = [1, 2, 3];
  * @param {Array} array - Массив любых элементов
  * @returns {Array}
  */
- const compact = (array) => {
-  let newArray = []
-  for (let index = 0; index < array.length; index++) {
-    const element = array[index];
-    if(element){
-      newArray.push(element)
-    }
-  }
-  return newArray
-}
+// todo решить с помощью filter, reduce
+
+// todo с помощью filter
+
+//  const compact = (array) => {
+//   let newArray = []
+//   newArray = array.filter(el => el)
+//   return newArray
+// }
+
+// todo с помощью reduce
+
+//  const compact = (array) => {
+//   return array.reduce((previousValue, currentValue) => {
+//     if(currentValue){
+//       return previousValue.concat(currentValue)
+//     }
+//     return previousValue = previousValue
+//   }, [])
+// }
 
 const wrongArray = [0, 1, false, 2, undefined, '', 3, null];
 // console.log(compact(wrongArray)) // [1, 2, 3]
@@ -78,13 +88,11 @@ const wrongArray = [0, 1, false, 2, undefined, '', 3, null];
  * @param {Array} array - массив, значения которого массивы пар
  * @returns {Array}
  */
+// todo решить с помощью reduce
  const fromPairs = (array) => {
-   let newObject = {}
-   for (let index = 0; index < array.length; index++) {
-     const element = array[index]
-     newObject[element[0]] = element[1]
-   }
-   return newObject
+   return array.reduce((previousValue, currentValue) => {
+    return previousValue = {...previousValue, [currentValue[0]]:currentValue[1]}
+   },{})
 }
 
 const toObject = [['a', 1], ['b', 2]];
@@ -96,8 +104,7 @@ const toObject = [['a', 1], ['b', 2]];
  * Ожидаемый результат: [1, 2, 3, 1, 2] без 1, 2 => [3]
  * @returns {Array}
  */
- function without() {
-  const argsArray = [...arguments]
+ function without(...argsArray) {
 
   let filterValueArray = []
   for (let index = 1; index < argsArray.length; index++) {
@@ -131,13 +138,14 @@ const arrayOfPrimitives = [1, 2, 3, 1, 2];
  * @param {Array<string | number>} array - Массив с примитивными значениями
  * @returns {Array}
  */
+// todo прочесть про "new Set()"
  const unique = (array) => {
   const result = array.filter((element, i) => 
     array.indexOf(element) === i)  
   return result
 }
 
-const doubleValuesArray = [1, 2, 1, 2, 3];
+const doubleValuesArray = [3, 1, 1, 2, 1, 2, 3];
 // console.log(unique(doubleValuesArray)); // [1, 2, 3]
 
 // ! 8
@@ -171,8 +179,8 @@ const arr2 = [1, 2, 3, 4];
    for (let index = 0; index < array.length; index++) {
      const element = array[index];
       arrayPart.push(element)
-      if(size === index-turn+1){
-        turn = index+1
+      if(size === arrayPart.length){
+        turn = arrayPart.length
         newArray.push(arrayPart)
         arrayPart=[]
       }
@@ -192,9 +200,13 @@ const arrayToChunk = [1, 2, 3, 4, 5, 6, 7];
  * @param {Object} object - любой объект для трансформации
  * @returns {Array} - вложенный массив
  */
-
+// todo  переписать на что-нибудь другое
 const makePairs = (object) => {
-  return Object.entries(object); 
+  let array = []
+  for (const key in object) {
+    array.push([key, object[key]])
+  }
+  return array
 };
 
 const objToArray = { a: 1, b: 2 };
@@ -208,31 +220,38 @@ const objToArray = { a: 1, b: 2 };
  * @returns {Object} - новый объект без удаленных значений
  */
 
-function withoutFields() {
-  const argsArray = [...arguments];
-  const array = Object.entries(argsArray[0]);
-
+function withoutFields(...argsArray) {
+  let object = {}
   let filterValueArray = []
   for (let index = 1; index < argsArray.length; index++) {
     const element = argsArray[index];
     filterValueArray.push(element)
   }
-  
-  let newArray = []
-  for (let index = 0; index < array.length; index++) {
-    const element = array[index];
-    if(element[0] !== filterValueArray[0]){
-      newArray.push(element)
+  for(const key in argsArray[0]){
+    if(!filterValueArray.includes(key)){
+      object = {...object, [key]:argsArray[0][key]}
     }
   }
-  filterValueArray.shift()
+  return object
+
+  // const array = Object.entries(argsArray[0]);
+
   
-  let newObject = Object.fromEntries(newArray)
-  if(filterValueArray.length > 0){
-    newObject = withoutFields(newObject, ...filterValueArray)
-  }
+  // let newArray = []
+  // for (let index = 0; index < array.length; index++) {
+  //   const element = array[index];
+  //   if(element[0] !== filterValueArray[0]){
+  //     newArray.push(element)
+  //   }
+  // }
+  // filterValueArray.shift()
   
-  return newObject
+  // let newObject = Object.fromEntries(newArray)
+  // if(filterValueArray.length > 0){
+  //   newObject = withoutFields(newObject, ...filterValueArray)
+  // }
+  
+  // return newObject
 };
 
 const objectToCut = { a: 1, b: 2, c: 3 };
@@ -247,7 +266,15 @@ const objectToCut = { a: 1, b: 2, c: 3 };
  * @returns {boolean}
  */
 
- export const isEqualObjects = (firstObject, secondObject) => {
+const isEqualObjects = (firstObject, secondObject) => {
+  let result 
+  for(const key in firstObject){
+    result = firstObject[key] === secondObject[key]
+    if(!result){
+      return false
+    }
+  }
+  return true
 };
 
 const isEqualObject1 = { a: 1, b: 1 };
@@ -265,9 +292,32 @@ const isEqualObject3 = { a: 1, b: 2 };
  * @returns {Object}
  */
 
- export const intersection = (firstObject, secondObject) => {
+const intersection = (firstObject, secondObject) => {
+  let newObject = {}
+
+  const firstArray = Object.entries(firstObject)
+  const secondArray = Object.entries(secondObject)
+
+  if(firstArray.length >=secondArray.length){
+    for(const key in firstObject){
+      if(Object.keys(secondObject).includes(key)){
+        if(Object.values(secondObject).indexOf(firstObject[key])===Object.keys(secondObject).indexOf(key)){
+          newObject = {...newObject, [key]:firstObject[key]}
+        }
+      }
+    }
+  } else {
+    for(const key in secondObject){
+      if(Object.keys(firstObject).includes(key)){
+        if(Object.values(firstObject).indexOf(secondObject[key])===Object.keys(firstObject).indexOf(key)){
+          newObject = {...newObject, [key]:secondObject[key]}
+        }
+      }
+    }
+  }
+  return newObject  
 };
 
 const intersectionObject1 = { a: 1, b: 2 };
 const intersectionObject2 = { c: 1, b: 2 };
-console.log(intersection(intersectionObject1, intersectionObject2)); // { b: 2 }
+// console.log(intersection(intersectionObject1, intersectionObject2)); // { b: 2 }
